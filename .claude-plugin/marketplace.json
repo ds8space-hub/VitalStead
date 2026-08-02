@@ -1,0 +1,18 @@
+{
+  "name": "vitalstead-marketplace",
+  "owner": {
+    "name": "Control Your Data"
+  },
+  "description": "Closed-MVP personal marketplace for the Vitalstead plugin (WHOOP sync). Not the public Anthropic directory — see docs/tasks/EPIC-07-plugin-packaging.md T-705 for that separate, later step.",
+  "plugins": [
+    {
+      "name": "vitalstead",
+      "source": "./plugin",
+      "description": "Sync wearable health data (WHOOP; more providers post-MVP) into local CSV files you fully control.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Control Your Data"
+      }
+    }
+  ]
+}

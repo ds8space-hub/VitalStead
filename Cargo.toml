@@ -1,0 +1,54 @@
+# Ядро перенесено из родительского проекта «Control your data» (src-tauri, коммит f7cc4da).
+# Форм-фактор проекта: Claude plugin + локальный MCP-сервер — см. docs/decisions.md (D-014).
+# Tauri-зависимости удалены: выбор папки диалогом заменён на путь из plugin user_config,
+# валидация пути — adapters::file_picker::verify_writable_and_readable.
+
+[package]
+name = "vitalstead-mcp"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+
+[lib]
+name = "vitalstead_mcp"
+path = "src/lib.rs"
+
+[[bin]]
+name = "vitalstead-mcp"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Сравнение `updated_at` в CSV upsert: DateTime<FixedOffset> + parse_from_rfc3339
+# корректно сравнивает метки с разными UTC-смещениями (наследие T-103 GAP-2).
+chrono = { version = "0.4", features = ["serde"] }
+# Криптографически случайный OAuth `state` (CSRF) — наследие T-202.
+uuid = { version = "1", features = ["v4"] }
+# T-201 (MCP бинарь): полный async-runtime + stdio-транспорт для tokio.
+# Требуется для rmcp server loop и stdio-обработки.
+# T-301: добавлены "net" (TCP listener), "time" (timeout) для localhost OAuth callback listener.
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "io-std", "io-util", "net", "time"] }
+# T-201 (MCP бинарь): официальный Rust SDK для Model Context Protocol.
+# Версия 2.2.0 (стабильная на 2026-07-15). Фичи: server (по умолчанию) + transport-io для stdio.
+rmcp = { version = "=2.2.0", features = ["server", "transport-io"] }
+# T-201 (MCP бинарь): логирование структурированными span'ами в stderr.
+# tracing — стандарт для async Rust-серверов; subscriber выбирает вывод на stderr.
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+# T-201 (MCP бинарь): schemars для JSON Schema generation в tool input_schema.
+# Версия 1.2.1 используется rmcp (фича schemars в rmcp), нужно совпадать.
+schemars = { version = "1.2", features = ["derive"] }
+# T-303: synchronous HTTP client for OAuth token exchange (blocking, no async).
+# default-features = false excludes native-tls; rustls-tls for TLS without OpenSSL.
+# features: blocking (synchronous HTTP), json (serde_json parsing).
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "json"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# macOS Keychain для credential vault (наследие T-201 родительского проекта).
+keyring = { version = "4.1" }
+
+[dev-dependencies]
+# Тестам нужны временные каталоги с управляемыми Unix-правами
+# (write-only / read-only) для verify_writable_and_readable и AtomicFileWriter.
+tempfile = "3"

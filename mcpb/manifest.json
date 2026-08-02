@@ -1,0 +1,49 @@
+{
+  "manifest_version": "0.3",
+  "name": "vitalstead",
+  "display_name": "Vitalstead",
+  "version": "0.1.0",
+  "description": "Sync wearable health data (WHOOP; more providers post-MVP) into local CSV files you fully control.",
+  "long_description": "Vitalstead connects to your own wearable provider's API (BYO OAuth app) and writes your health data to CSV files on your own machine. Nothing is uploaded anywhere except the provider's own API. Sync only happens when you ask for it, and your data stays as plain CSV files you own and can inspect, back up, or delete at any time.",
+  "author": {
+    "name": "Control Your Data"
+  },
+  "server": {
+    "type": "binary",
+    "entry_point": "server/vitalstead-mcp",
+    "mcp_config": {
+      "command": "${__dirname}/server/vitalstead-mcp",
+      "args": [],
+      "env": {
+        "VITALSTEAD_OAUTH_FIXED_PORT": "53682",
+        "VITALSTEAD_DATA_FOLDER": "${user_config.data_folder}",
+        "WHOOP_CLIENT_ID": "${user_config.whoop_client_id}",
+        "WHOOP_CLIENT_SECRET": "${user_config.whoop_client_secret}"
+      }
+    }
+  },
+  "user_config": {
+    "data_folder": {
+      "type": "directory",
+      "title": "Data Storage Folder",
+      "description": "Where synced health data CSV files are written. Nothing outside this folder is touched.",
+      "required": true
+    },
+    "whoop_client_id": {
+      "type": "string",
+      "title": "WHOOP Client ID",
+      "description": "From your own WHOOP developer app (BYO OAuth). Leave empty if you haven't registered one yet — the setup skill walks you through it.",
+      "sensitive": false,
+      "required": false
+    },
+    "whoop_client_secret": {
+      "type": "string",
+      "title": "WHOOP Client Secret",
+      "description": "From your own WHOOP developer app (BYO OAuth). Masked and stored by Claude Desktop, never entered into chat.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "keywords": ["health", "wearables", "whoop", "privacy", "local-first"],
+  "license": "UNLICENSED"
+}

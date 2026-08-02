@@ -1,0 +1,832 @@
+<title>Vitalstead — Extension Reference</title>
+<style>
+  :root {
+    --paper: #eef0ec;
+    --surface: #ffffff;
+    --surface-raised: #f7f8f5;
+    --ink: #17211f;
+    --ink-soft: #47504c;
+    --ink-faint: #6b7570;
+    --line: #d7dbd3;
+    --accent: #9c2b3d;
+    --accent-soft: #f4e2e2;
+    --accent-2: #2f6f6a;
+    --accent-2-soft: #e1ebe8;
+    --amber: #8f6516;
+    --amber-soft: #f2e7cd;
+    --code-bg: #18211f;
+    --code-ink: #dfe8e2;
+    --code-accent: #e6a5a5;
+    --shadow: 0 1px 2px rgba(23,33,31,0.06), 0 8px 24px -12px rgba(23,33,31,0.18);
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #101716;
+    --surface: #1a2321;
+    --surface-raised: #202b28;
+    --ink: #e7ece9;
+    --ink-soft: #b7c2bd;
+    --ink-faint: #7d8b85;
+    --line: #2c3936;
+    --accent: #e0788a;
+    --accent-soft: #33201f;
+    --accent-2: #7ec4bc;
+    --accent-2-soft: #16302c;
+    --amber: #dcae5b;
+    --amber-soft: #332912;
+    --code-bg: #0c1211;
+    --code-ink: #d7e2dc;
+    --code-accent: #eeb6b6;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px -16px rgba(0,0,0,0.6);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101716;
+      --surface: #1a2321;
+      --surface-raised: #202b28;
+      --ink: #e7ece9;
+      --ink-soft: #b7c2bd;
+      --ink-faint: #7d8b85;
+      --line: #2c3936;
+      --accent: #e0788a;
+      --accent-soft: #33201f;
+      --accent-2: #7ec4bc;
+      --accent-2-soft: #16302c;
+      --amber: #dcae5b;
+      --amber-soft: #332912;
+      --code-bg: #0c1211;
+      --code-ink: #d7e2dc;
+      --code-accent: #eeb6b6;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px -16px rgba(0,0,0,0.6);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  code, .mono, .stat-num, .card-name, .badge, table td.mono-cell, .path {
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+
+  a { color: var(--accent); }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    max-width: 1180px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* ---------- Nav rail ---------- */
+  .nav-rail {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 40px 20px 40px 32px;
+    border-right: 1px solid var(--line);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .brand svg { flex-shrink: 0; }
+
+  .brand-name {
+    font-family: ui-serif, Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-tag {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    margin: 0 0 28px;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-rail nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-rail a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.875rem;
+    padding: 7px 10px;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .nav-rail a:hover { background: var(--surface-raised); color: var(--ink); }
+
+  .nav-group-label {
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin: 18px 0 4px 10px;
+  }
+
+  .nav-group-label:first-child { margin-top: 0; }
+
+  /* ---------- Content ---------- */
+  main {
+    padding: 48px 48px 120px;
+    min-width: 0;
+  }
+
+  .lede {
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+    margin: 14px 0 0;
+  }
+
+  section { margin-top: 76px; scroll-margin-top: 24px; }
+  section:first-of-type { margin-top: 0; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .section-num {
+    font-family: ui-monospace, monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  h2 { font-size: 1.7rem; }
+  h3 { font-size: 1.15rem; margin-bottom: 10px; }
+
+  .section-intro {
+    max-width: 66ch;
+    color: var(--ink-soft);
+    margin: 10px 0 28px;
+  }
+
+  .pulse-divider {
+    display: block;
+    width: 100%;
+    height: 20px;
+    margin: 12px 0 0;
+    opacity: 0.5;
+  }
+
+  /* ---------- Stat strip ---------- */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 32px;
+  }
+
+  .stat-tile {
+    background: var(--surface);
+    padding: 18px 20px;
+  }
+
+  .stat-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  /* ---------- Flow diagram ---------- */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: stretch;
+    margin: 28px 0;
+  }
+
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+  }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Category legend ---------- */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin: 4px 0 32px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dot-connect { background: var(--accent); }
+  .dot-data { background: var(--accent-2); }
+  .dot-storage { background: var(--amber); }
+  .dot-remove { background: var(--ink-faint); }
+
+  /* ---------- Tool cards ---------- */
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .tool-card[data-cat="data"] { border-left-color: var(--accent-2); }
+  .tool-card[data-cat="storage"] { border-left-color: var(--amber); }
+  .tool-card[data-cat="remove"] { border-left-color: var(--ink-faint); }
+
+  .tool-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .badge {
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .tool-card[data-cat="data"] .badge { background: var(--accent-2-soft); color: var(--accent-2); }
+  .tool-card[data-cat="storage"] .badge { background: var(--amber-soft); color: var(--amber); }
+  .tool-card[data-cat="remove"] .badge { background: var(--surface-raised); color: var(--ink-faint); }
+
+  .tool-desc {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin: 0 0 14px;
+    max-width: 68ch;
+  }
+
+  .param-table-wrap { overflow-x: auto; }
+
+  table.param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+
+  table.param-table th {
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    padding: 6px 10px 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  table.param-table td {
+    padding: 8px 10px 8px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+
+  table.param-table tr:last-child td { border-bottom: none; }
+
+  td.mono-cell { color: var(--ink); white-space: nowrap; }
+
+  .req-yes { color: var(--accent); font-weight: 600; }
+  .req-no { color: var(--ink-faint); }
+
+  .note {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--surface-raised);
+    border-left: 2px solid var(--ink-faint);
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .note.warn { border-left-color: var(--amber); }
+  .note strong { color: var(--ink); }
+
+  /* ---------- Sync window bars ---------- */
+  .sync-window {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    align-items: center;
+    gap: 14px;
+    margin: 10px 0;
+    font-size: 0.8rem;
+  }
+
+  .sync-window .label { color: var(--ink-soft); text-align: right; }
+
+  .bar-track {
+    height: 22px;
+    background: var(--surface-raised);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    background: var(--accent-2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    color: #fff;
+    font-size: 0.7rem;
+    font-family: ui-monospace, monospace;
+  }
+
+  .bar-fill.first { background: var(--accent); }
+
+  /* ---------- Code block ---------- */
+  pre.code {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    line-height: 1.55;
+    margin: 12px 0;
+  }
+  pre.code .k { color: var(--code-accent); }
+  pre.code .s { color: #a9c9a0; }
+
+  /* ---------- Guide steps ---------- */
+  .guide-list {
+    counter-reset: guide;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .guide-item {
+    counter-increment: guide;
+    position: relative;
+    padding: 4px 0 30px 44px;
+    border-left: 1px solid var(--line);
+    margin-left: 14px;
+  }
+  .guide-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+  .guide-item::before {
+    content: counter(guide);
+    position: absolute;
+    left: -14px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .guide-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .guide-body { color: var(--ink-soft); font-size: 0.88rem; max-width: 64ch; }
+  .guide-body code { background: var(--surface-raised); padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+
+  /* ---------- Two-col info grid ---------- */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+
+  .info-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .info-card p { color: var(--ink-soft); font-size: 0.86rem; margin: 0 0 8px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .path {
+    display: inline-block;
+    background: var(--surface-raised);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  /* ---------- Error table ---------- */
+  .err-row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 0.85rem; }
+  .err-row:last-child { border-bottom: none; }
+  .err-kind { font-family: ui-monospace, monospace; color: var(--accent); font-weight: 600; font-size: 0.8rem; align-self: start; }
+  .err-recovery { color: var(--ink-soft); }
+  .err-recovery strong { color: var(--ink); font-weight: 600; }
+
+  footer {
+    max-width: 66ch;
+    margin-top: 90px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+    .nav-rail { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 24px 24px 16px; }
+    .nav-rail nav { flex-direction: row; flex-wrap: wrap; }
+    .nav-group-label { display: none; }
+    main { padding: 32px 24px 80px; }
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    .info-grid { grid-template-columns: 1fr; }
+    .err-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="shell">
+  <aside class="nav-rail">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="10" stroke="var(--accent)" stroke-width="1.4"/>
+        <path d="M4 11h3l1.4 -3.4L11 15l1.8 -6L14.2 11H18" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">Vitalstead</span>
+    </div>
+    <p class="brand-tag">MCP extension reference</p>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#glance">At a glance</a>
+      <div class="nav-group-label">Tools</div>
+      <a href="#tools-connect">Connect &amp; sync</a>
+      <a href="#tools-data">Data access</a>
+      <a href="#tools-storage">Storage</a>
+      <a href="#tools-remove">Disconnect &amp; delete</a>
+      <div class="nav-group-label">Assistant</div>
+      <a href="#prompt">Setup wizard prompt</a>
+      <div class="nav-group-label">Guide</div>
+      <a href="#guide">Walkthrough</a>
+      <a href="#backstage">Behind the scenes</a>
+      <a href="#errors">Errors &amp; recovery</a>
+    </nav>
+  </aside>
+
+  <main>
+
+    <section id="overview">
+      <div class="section-head"><span class="section-num">§0</span><h2>What Vitalstead does</h2></div>
+      <p class="lede">
+        A local MCP server that connects your wearable account (WHOOP today), pulls your
+        sleep, recovery, cycle and workout data, and writes it as plain CSV files on
+        <em>your own machine</em>. Nothing is uploaded anywhere except the provider's own API.
+        No sync happens unless you (or Claude, on your request) explicitly ask for one.
+      </p>
+
+      <div class="stat-strip" id="glance">
+        <div class="stat-tile"><div class="stat-num">8</div><div class="stat-label">Tools</div></div>
+        <div class="stat-tile"><div class="stat-num">1</div><div class="stat-label">Setup prompt</div></div>
+        <div class="stat-tile"><div class="stat-num">4</div><div class="stat-label">CSV files / provider</div></div>
+        <div class="stat-tile"><div class="stat-num">365d</div><div class="stat-label">First-sync backfill</div></div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <div class="section-head"><span class="section-num">§1</span><h2>Tools</h2></div>
+      <p class="section-intro">
+        Everything Claude can call on your behalf. Every response carries only statuses,
+        counts and file paths — raw health values only appear if you explicitly ask for them.
+      </p>
+      <div class="legend">
+        <div class="legend-item"><span class="dot dot-connect"></span>Connect &amp; sync</div>
+        <div class="legend-item"><span class="dot dot-data"></span>Data access</div>
+        <div class="legend-item"><span class="dot dot-storage"></span>Storage</div>
+        <div class="legend-item"><span class="dot dot-remove"></span>Disconnect &amp; delete</div>
+      </div>
+
+      <h3 id="tools-connect">Connect &amp; sync</h3>
+
+      <div class="tool-card" data-cat="connect">
+        <div class="tool-head"><span class="card-name">connect_provider</span><span class="badge">OAuth</span></div>
+        <p class="tool-desc">Connects a new wearable account. Opens a browser for WHOOP login, exchanges the authorization code for tokens, and stores them in the macOS Keychain — never in a config file, never in this conversation.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td class="mono-cell">provider</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td>Currently only <code>"whoop"</code>.</td></tr>
+              <tr><td class="mono-cell">connection_id</td><td class="mono-cell">string?</td><td class="req-no">no</td><td>Auto-generated if omitted; set explicitly to add a second account for the same provider.</td></tr>
+              <tr><td class="mono-cell">client_id</td><td class="mono-cell">string?</td><td class="req-no">no</td><td>Your BYO WHOOP app's Client ID — should come from the extension's own config screen, not typed in chat.</td></tr>
+              <tr><td class="mono-cell">client_secret</td><td class="mono-cell">string?</td><td class="req-no">no</td><td>Same rule, stricter: this is a real secret and must never be sourced from chat text.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tool-card" data-cat="connect">
+        <div class="tool-head"><span class="card-name">sync_provider</span><span class="badge">Sync</span></div>
+        <p class="tool-desc">Syncs one specific connection. Returns record counts per data type and the exact date range covered — never the values themselves.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td class="mono-cell">provider</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td></td></tr>
+              <tr><td class="mono-cell">connection_id</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td></td></tr>
+              <tr><td class="mono-cell">days</td><td class="mono-cell">int?</td><td class="req-no">no</td><td>Overrides the default window. 1–3650 (10&nbsp;years).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sync-window">
+          <span class="label">First sync</span>
+          <div class="bar-track"><div class="bar-fill first" style="width:100%">365 days</div></div>
+        </div>
+        <div class="sync-window">
+          <span class="label">Later syncs</span>
+          <div class="bar-track"><div class="bar-fill" style="width:19%">7 days</div></div>
+        </div>
+        <div class="note">A connection with no prior <span class="mono">sync_state</span> entry backfills 365&nbsp;days automatically — a year-old account doesn't look empty right after connecting. Pass <code>days</code> to pull further back manually at any time.</div>
+      </div>
+
+      <div class="tool-card" data-cat="connect">
+        <div class="tool-head"><span class="card-name">sync_now</span><span class="badge">Sync</span></div>
+        <p class="tool-desc">Discovers every connection that has synced before and syncs all of them in one call, continuing past individual failures.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td class="mono-cell">days</td><td class="mono-cell">int?</td><td class="req-no">no</td><td>Applied uniformly to every discovered connection. 1–3650.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note warn"><strong>Known limitation —</strong> a connection that was <span class="mono">connect_provider</span>'d but never successfully synced isn't discoverable yet; call <span class="mono">sync_provider</span> directly for it.</div>
+      </div>
+
+      <h3 id="tools-data">Data access</h3>
+
+      <div class="tool-card" data-cat="data">
+        <div class="tool-head"><span class="card-name">list_data</span><span class="badge">Read</span></div>
+        <p class="tool-desc">Lists every discovered source, its CSV files, and the date range each one covers.</p>
+        <div class="note warn"><strong>Known limitation —</strong> <span class="mono">status</span> always reads <code>"connected"</code> — there's no live token check yet. A silently expired connection only surfaces once you actually run a sync.</div>
+      </div>
+
+      <div class="tool-card" data-cat="data">
+        <div class="tool-head"><span class="card-name">query_data</span><span class="badge">Read</span></div>
+        <p class="tool-desc">Asks a question about your synced data without opening the CSV yourself. Aggregates only by default — raw rows never enter the conversation unless you ask.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td class="mono-cell">data_type</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td><code>sleep</code> · <code>recovery</code> · <code>cycle</code> · <code>workout</code></td></tr>
+              <tr><td class="mono-cell">column</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td>Metric column to aggregate, e.g. <code>recovery_score</code>.</td></tr>
+              <tr><td class="mono-cell">providers</td><td class="mono-cell">string[]?</td><td class="req-no">no</td><td>Required if the CSV mixes more than one source — never silently merged.</td></tr>
+              <tr><td class="mono-cell">start</td><td class="mono-cell">string?</td><td class="req-no">no</td><td>RFC3339 lower bound.</td></tr>
+              <tr><td class="mono-cell">end</td><td class="mono-cell">string?</td><td class="req-no">no</td><td>RFC3339 upper bound.</td></tr>
+              <tr><td class="mono-cell">include_raw</td><td class="mono-cell">bool</td><td class="req-no">default false</td><td>When true, matching rows enter this conversation — capped at 500 rows.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note warn"><strong>Provisional values —</strong> a row whose <span class="mono">score_state</span> is <code>PENDING_SCORE</code> (e.g. today's not-yet-closed cycle) is still counted in the aggregate, but flagged via <code>provisional_count</code>/<code>provisional_note</code> in the response — its value (like today's strain) updates live until WHOOP finalizes it.</div>
+      </div>
+
+      <h3 id="tools-storage">Storage</h3>
+
+      <div class="tool-card" data-cat="storage">
+        <div class="tool-head"><span class="card-name">set_data_folder</span><span class="badge">Config</span></div>
+        <p class="tool-desc">Sets where CSV files get written. Validates that the path is writable and readable before accepting it.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody><tr><td class="mono-cell">path</td><td class="mono-cell">string</td><td class="req-yes">yes</td><td>e.g. <code>~/Documents/health-data</code></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3 id="tools-remove">Disconnect &amp; delete</h3>
+
+      <div class="tool-card" data-cat="remove">
+        <div class="tool-head"><span class="card-name">disconnect_provider</span><span class="badge">Revoke</span></div>
+        <p class="tool-desc">Best-effort revokes the token with the provider, then deletes the stored credentials. CSV files are never touched.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th></tr></thead>
+            <tbody>
+              <tr><td class="mono-cell">provider</td><td class="mono-cell">string</td><td class="req-yes">yes</td></tr>
+              <tr><td class="mono-cell">connection_id</td><td class="mono-cell">string</td><td class="req-yes">yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tool-card" data-cat="remove">
+        <div class="tool-head"><span class="card-name">delete_app_data</span><span class="badge">Destructive</span></div>
+        <p class="tool-desc">Only ever runs on your explicit request — no other flow calls it automatically.</p>
+        <div class="param-table-wrap">
+          <table class="param-table">
+            <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+            <tbody><tr><td class="mono-cell">connections</td><td class="mono-cell">array?</td><td class="req-no">no</td><td><code>null</code> wipes everything — all CSVs, config, every stored credential. An explicit list deletes only those credentials; CSVs stay.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="prompt">
+      <div class="section-head"><span class="section-num">§2</span><h2>Setup wizard prompt</h2></div>
+      <p class="section-intro">
+        Exposed as an MCP <em>Prompt</em> named <code>setup_guide</code> — available the moment the
+        extension connects, no separate install step. Ask Claude to walk you through connecting
+        WHOOP, or invoke it directly if your client surfaces prompts in its "/" menu.
+      </p>
+      <div class="flow">
+        <div class="flow-step">Privacy model</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Data folder</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Register WHOOP app</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Enter creds<br>(not in chat)</div><div class="flow-arrow">→</div>
+        <div class="flow-step">connect_provider</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Verify</div><div class="flow-arrow">→</div>
+        <div class="flow-step">First sync</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Explain CSVs<br>&amp; queries</div>
+      </div>
+      <div class="note">Hard rule baked into the prompt: never ask you for a password, secret, or authorization code in chat. Credentials go in only through the extension's own configuration screen.</div>
+    </section>
+
+    <section id="guide">
+      <div class="section-head"><span class="section-num">§3</span><h2>Walkthrough</h2></div>
+      <p class="section-intro">From a blank install to your first query, step by step.</p>
+      <ol class="guide-list">
+        <li class="guide-item">
+          <div class="guide-title">Install &amp; configure</div>
+          <div class="guide-body">Install the <code>.mcpb</code> extension. Claude Desktop prompts for a <strong>data folder</strong> and, optionally, your WHOOP <strong>Client ID / Secret</strong> right away — or leave them blank and fill them in later via the extension's own configure screen.</div>
+        </li>
+        <li class="guide-item">
+          <div class="guide-title">Register a WHOOP developer app</div>
+          <div class="guide-body">Set the redirect URI to exactly <span class="path">http://127.0.0.1:53682/callback</span>, request scopes <code>offline</code>, <code>read:sleep</code>, <code>read:recovery</code>, <code>read:cycles</code>, <code>read:workout</code>.</div>
+        </li>
+        <li class="guide-item">
+          <div class="guide-title">Connect</div>
+          <div class="guide-body">Ask Claude to connect WHOOP. A browser opens for you to log in and approve access — the callback comes straight back to the local server, nothing routes through the model.</div>
+        </li>
+        <li class="guide-item">
+          <div class="guide-title">First sync</div>
+          <div class="guide-body">Backfills 365 days automatically. You'll get back record counts per data type and the exact date range — not the values.</div>
+        </li>
+        <li class="guide-item">
+          <div class="guide-title">Ask questions</div>
+          <div class="guide-body">"What's my average recovery this month?" runs through <code>query_data</code> — aggregate only, unless you ask for raw rows.</div>
+        </li>
+        <li class="guide-item">
+          <div class="guide-title">Keep it current</div>
+          <div class="guide-body">Run <code>sync_now</code> whenever you want fresh data — it's incremental after the first backfill, so it stays fast.</div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="backstage">
+      <div class="section-head"><span class="section-num">§4</span><h2>Behind the scenes</h2></div>
+      <p class="section-intro">Things that happen automatically, worth knowing about.</p>
+      <div class="info-grid">
+        <div class="info-card">
+          <h4>Token refresh</h4>
+          <p>WHOOP access tokens live 1 hour. Every sync refreshes proactively at the start, and again mid-sync if a long backfill runs past that window — no manual re-login needed.</p>
+          <p>Concurrent syncs on the same connection dedupe the refresh call: it happens exactly once, not once per parallel request.</p>
+        </div>
+        <div class="info-card">
+          <h4>Where credentials live</h4>
+          <p>The macOS Keychain — <span class="path">~/Library/Keychains/login.keychain-db</span> — under a service name scoped per connection, e.g. <span class="path">vitalstead.whoop.conn_ab12…</span>. Never in a config file, never logged.</p>
+        </div>
+        <div class="info-card">
+          <h4>If reconnection is needed</h4>
+          <p>Should WHOOP revoke or expire the refresh token, the next sync returns a structured error with <code>recovery: "Reconnect the data source."</code> — not a silent failure.</p>
+        </div>
+        <div class="info-card">
+          <h4>What never enters the conversation</h4>
+          <p>Passwords, tokens, and full API response bodies — by design. Health values only appear if you explicitly set <code>include_raw: true</code>, or paste your own CSV.</p>
+        </div>
+        <div class="info-card">
+          <h4>Live vs. finalized values</h4>
+          <p>Sleep, recovery, cycle and workout scores aren't all final the moment they exist — WHOOP marks each row's <code>score_state</code>, and a still-open period (typically today's not-yet-closed cycle) sits at <code>PENDING_SCORE</code> while its <code>strain</code> keeps updating live through the day.</p>
+          <p><code>query_data</code> doesn't hide these rows, but does flag them (<code>provisional_count</code>) — a resync later may show a different number for the same row, and that's expected, not a bug.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="errors">
+      <div class="section-head"><span class="section-num">§5</span><h2>Errors &amp; recovery</h2></div>
+      <p class="section-intro">Every failure comes back structured — a <code>kind</code>, a plain-language <code>message</code>, and a <code>recovery</code> Claude relays verbatim instead of guessing.</p>
+      <pre class="code">{
+  <span class="k">"status"</span>: "error",
+  <span class="k">"error"</span>: {
+    <span class="k">"kind"</span>: <span class="s">"refresh.client_error"</span>,
+    <span class="k">"message"</span>: <span class="s">"The provider rejected the authentication refresh request (HTTP 401)."</span>,
+    <span class="k">"recovery"</span>: <span class="s">"Reconnect the data source."</span>
+  }
+}</pre>
+      <div class="err-row"><div class="err-kind">no_data_folder_configured</div><div class="err-recovery">Set a data folder before syncing. <strong>Fix:</strong> call <code>set_data_folder</code> first.</div></div>
+      <div class="err-row"><div class="err-kind">missing_client_credentials</div><div class="err-recovery">WHOOP Client ID/Secret aren't set yet. <strong>Fix:</strong> enter them in the extension's configure screen.</div></div>
+      <div class="err-row"><div class="err-kind">invalid_days</div><div class="err-recovery">The <code>days</code> override was outside 1–3650. <strong>Fix:</strong> pick a value in range, or omit it entirely.</div></div>
+      <div class="err-row"><div class="err-kind">sync.fetch_failed</div><div class="err-recovery">The provider's response couldn't be read after retries. <strong>Fix:</strong> retry the sync; report it if it persists.</div></div>
+      <div class="err-row"><div class="err-kind">refresh.client_error</div><div class="err-recovery">The refresh token was rejected — usually expired or revoked. <strong>Fix:</strong> reconnect via <code>connect_provider</code>.</div></div>
+    </section>
+
+    <footer>
+      Vitalstead is local-first: CSV files live only in the folder you choose, sync only happens
+      when you ask, and disconnecting a provider never deletes data you already have.
+    </footer>
+  </main>
+</div>

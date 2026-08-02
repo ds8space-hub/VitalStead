@@ -1,0 +1,22 @@
+{
+  "name": "vitalstead",
+  "description": "Sync wearable health data (WHOOP; more providers post-MVP) into local CSV files you fully control. Health data never leaves your machine except via explicit tool calls.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Control Your Data"
+  },
+  "userConfig": {
+    "whoop_client_id": {
+      "type": "string",
+      "title": "WHOOP Client ID",
+      "description": "From your own WHOOP developer app (BYO OAuth, D-006). Leave empty if you haven't registered one yet — the setup skill will walk you through it.",
+      "sensitive": false
+    },
+    "whoop_client_secret": {
+      "type": "string",
+      "title": "WHOOP Client Secret",
+      "description": "From your own WHOOP developer app (BYO OAuth, D-006). Masked and stored by Claude Code, never entered into chat.",
+      "sensitive": true
+    }
+  }
+}

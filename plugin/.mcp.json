@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "vitalstead": {
+      "type": "stdio",
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/vitalstead-mcp",
+      "args": [],
+      "env": {
+        "VITALSTEAD_OAUTH_FIXED_PORT": "53682",
+        "WHOOP_CLIENT_ID": "${user_config.whoop_client_id}",
+        "WHOOP_CLIENT_SECRET": "${user_config.whoop_client_secret}"
+      }
+    }
+  }
+}
