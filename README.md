@@ -48,6 +48,14 @@ how the core is structured.
 Provider support is currently WHOOP only; Oura and Garmin (manual ZIP
 import) are tracked as post-MVP (D-017/D-018).
 
+## Screenshot
+
+[`docs/reference.html`](docs/reference.html) is a self-contained, browsable
+reference of every tool, the setup wizard flow, and error handling — open it
+directly in a browser, no build step needed.
+
+![Vitalstead extension reference — tool list, setup wizard flow, and error handling](docs/assets/reference-screenshot.png)
+
 ## Two ways to install
 
 This repo ships two parallel packaging channels for the same server —
@@ -100,6 +108,42 @@ install steps via a plugin marketplace, and available slash commands
 - [`docs/tasks/README.md`](docs/tasks/README.md) — the task backlog
   (epics, T-xxx tasks).
 - [`docs/roadmap.md`](docs/roadmap.md) — milestone sequence.
+
+## Roadmap
+
+Milestones are ordered by dependency, not by calendar date — each one
+unblocks the next.
+
+| # | Milestone | Status |
+|---|---|---|
+| M1 | Core ported from the parent Tauri project, platform-independent | ✅ done — 90+ unit tests green |
+| M2 | MCP server scaffold (`initialize`, tool listing) | ✅ done |
+| M3 | End-to-end OAuth (browser → provider → tokens in Keychain, provider-agnostic) | ✅ done |
+| M4 | First sync (`sync_now` fills WHOOP CSVs, atomically) | ✅ done |
+| M5 | Connector contract locked (a second provider can be added without core refactors) | ✅ done |
+| M6 | Closed MVP (plugin installable by testers from a personal marketplace) | ✅ done |
+| M7 | Distribution polish (MCPB one-click bundle) | ✅ done |
+| M8 | Public channel — submission to the Anthropic directory | ⬜ not yet submitted |
+| — | Oura connector | ⬜ post-MVP |
+| — | Garmin (manual ZIP import) | ⬜ post-MVP |
+| — | Windows support for the MCPB bundle | ⬜ post-MVP |
+
+## License
+
+MIT — see [`LICENSE`](LICENSE).
+
+## Supporting this project
+
+Vitalstead is a solo, spare-time project. If it's useful to you and you'd
+like to help it keep moving, sponsorships go toward two concrete things:
+
+- **Building out more providers.** Oura and Garmin support both require
+  actually owning the devices/subscriptions to develop and test against —
+  right now that's the main blocker on the roadmap items above.
+- **Getting into the public Anthropic directory.** Submission and review
+  for Desktop Extensions / the Claude plugin marketplace (M8) has its own
+  overhead (test accounts, iteration on reviewer feedback) that sponsorship
+  helps cover.
 
 ## Development
 
