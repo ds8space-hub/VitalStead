@@ -45,5 +45,5 @@
     }
   },
   "keywords": ["health", "wearables", "whoop", "privacy", "local-first"],
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
